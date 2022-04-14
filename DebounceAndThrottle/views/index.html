@@ -1,0 +1,138 @@
+<html>
+
+<head>
+    <title>Debounce and Throttle</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #f4df4f;
+            font-family: system-ui, Roboto, Arial, sans-serif;
+            font-size: 1.4em;
+            line-height: 1.6;
+            color: #242424;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .container {
+            display: flex;
+            padding: 1em;
+        }
+
+        .input-container {
+            width: 50%;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.5em;
+        }
+
+        p {
+            word-break: break-all;
+            margin: 0.5em 0;
+        }
+
+        #d_input-value {
+            color: #ba0e51;
+        }
+
+        #d_debounce-value {
+            color: #0b9713;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="input-container">
+            <legend>
+                <fieldset>
+                    <legend>Debounce</legend>
+                    <label>Search</label>
+                    <input type="text" id="d_name" />
+                    <p>onInput: <span id="d_input-value"></span></p>
+                    <p>debouncedInput: <span id="d_debounce-value">
+                </fieldset>
+            </legend>
+        </div>
+
+        <div class="input-container">
+            <legend>
+                <fieldset>
+                    <legend>Throttle</legend>
+                    <label>Search</label>
+                    <input type="text" id="t_name" />
+                    <p>onInput: <span id="t_input-value"></span></p>
+                    <p>throttleInput: <span id="t_throttle-value">
+                </fieldset>
+            </legend>
+        </div>
+    </div>
+</body>
+
+<script>
+    var input = document.getElementById('d_name');
+    var inputValue = document.getElementById('d_input-value');
+    var debounceValue = document.getElementById('d_debounce-value');
+
+    const updateInputValue = () => {
+        inputValue.innerHTML = input.value;
+    }
+
+    const updateDebounceValue = () => {
+        debounceValue.innerHTML = input.value;
+    }
+
+    let debounceTimer;
+    const debounce = (callback, time) => {
+        window.clearTimeout(debounceTimer);
+        debounceTimer = window.setTimeout(callback, time);
+    };
+
+    input.addEventListener("input", function () {
+        updateInputValue();
+        debounce(updateDebounceValue, 500)
+    }, false);
+
+
+    //Throtttle
+    var t_input = document.getElementById('t_name');
+    var t_inputValue = document.getElementById('t_input-value');
+    var t_throttleValue = document.getElementById('t_throttle-value');
+
+    const t_updateInputValue = () => {
+        t_inputValue.innerHTML = t_input.value;
+    }
+
+    const t_updateThrottleValue = () => {
+        t_throttleValue.innerHTML = t_input.value;
+    }
+
+    const t_throttle = (func, delay) => {
+        let toThrottle = false;
+        return function () {
+            if (!toThrottle) {
+                toThrottle = true;
+                func.apply(this, arguments)
+                setTimeout(() => {
+                    toThrottle = false
+                }, delay);
+            }
+        };
+    };
+
+    const throttle = t_throttle(t_updateThrottleValue, 5000);
+
+    function inputChange() {
+        t_updateInputValue();
+        throttle();
+    }
+
+    t_input.addEventListener("input", inputChange, false);
+</script>
+
+</html>
