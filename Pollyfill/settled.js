@@ -1,8 +1,11 @@
+/*Promise.allSettled will return a single promise when all the promises are successfully executed. 
+It does not depend if the promises are resolved, or rejected.*/
+
 const letsBuildSettled = function (promises = []) {
   return new Promise((resolve, reject) => {
     let results = [];
     promises.forEach((promise) => {
-        promise
+      promise
         .then((value) => {
           results.push({ status: "fulfilled", value: value });
           if (promises.length === results.length) resolve(results);
