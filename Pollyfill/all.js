@@ -1,6 +1,6 @@
 // pollyfill for promise.all
 
-const letsBuildAll = function (promises) {
+const letsBuildAll = function (promises = []) {
   var count = promises.length;
   var resolvedCount = 0;
   var results = new Array(count).fill(false);
