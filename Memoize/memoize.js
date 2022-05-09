@@ -15,6 +15,21 @@ const memoize = (fn) => {
       }
     }
   }
+
+  const memoizeAnyNoOfArguments =  (fn) => {
+    let cache = {};
+    return (...args) => {
+      let key = JSON.stringify(args);
+      if(cache[key]){
+        return cache[key];
+      }
+      else{
+        let result = args.reduce((acc, curr) => fn(acc,curr), 1);
+        cache[key] = result;
+        return result;
+      }
+    }
+  }
   
   const factorial = memoize(
     (x) => {
@@ -28,3 +43,15 @@ const memoize = (fn) => {
   );
   console.log(factorial(5)); // calculated
   console.log(factorial(6)); // calculated for 6 and cached for 5
+
+
+  const multiply = function (x, y) {
+    return x * y;
+  };
+
+  const mult = memoizeAnyNoOfArguments(multiply);
+  console.log(mult(6,8));
+  console.log(mult(6,9));
+  console.log(mult(6,9,10));
+  console.log(mult(6,9,10));
+

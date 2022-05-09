@@ -45,7 +45,6 @@ Print arr
 */
 
 function insertionSort2(n, arr) {
-    // Write your code here
     let i, j;
     for(i = 1; i < arr.length; i++){
         let current = arr[i];
